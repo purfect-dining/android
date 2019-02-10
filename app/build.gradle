@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def apikeyPropertiesFile = rootProject.file('backendless.keys')
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -8,6 +12,9 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+
+        buildConfigField('String', 'BACKENDLESS_APP_ID', apikeyProperties['applicationId'])
+        buildConfigField('String', 'BACKENDLESS_API_KEY', apikeyProperties['apiKey'])
     }
     buildTypes {
         release {
@@ -18,6 +25,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.backendless:backendless:5.2.4'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
