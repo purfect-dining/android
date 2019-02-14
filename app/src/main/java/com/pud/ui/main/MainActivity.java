@@ -1,7 +1,6 @@
 package com.pud.ui.main;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.pud.R;
 import com.pud.ui.adapter.ViewPagerAdapter;
@@ -29,11 +28,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-    }
-
-    @Override
-    public void onError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
