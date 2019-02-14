@@ -1,4 +1,4 @@
-package com.pud.pojo;
+package com.pud.model;
 
 import com.backendless.BackendlessUser;
 

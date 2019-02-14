@@ -1,6 +1,6 @@
 package com.pud.ui.adapter;
 
-import com.pud.ui.HomeFragment;
+import com.pud.ui.home.HomeFragment;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

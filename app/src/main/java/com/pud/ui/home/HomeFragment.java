@@ -1,4 +1,4 @@
-package com.pud.ui;
+package com.pud.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,11 +1,9 @@
-package com.pud.ui;
+package com.pud.ui.main;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.pud.R;
-import com.pud.presenter.MainContract;
-import com.pud.presenter.MainPresenter;
 import com.pud.ui.adapter.ViewPagerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;

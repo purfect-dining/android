@@ -1,6 +1,4 @@
-package com.pud.presenter;
-
-import com.pud.model.MainModel;
+package com.pud.ui.main;
 
 public class MainPresenter implements MainContract.Presenter {
 
