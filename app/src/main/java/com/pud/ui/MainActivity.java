@@ -1,14 +1,21 @@
-package com.pud;
+package com.pud.ui;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.pud.R;
 import com.pud.presenter.MainPresenter;
 import com.pud.presenter.view.MainView;
+import com.pud.ui.adapter.ViewPagerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity implements MainView {
+
+    private ViewPager mPager;
+
+    private ViewPagerAdapter mPagerAdapter;
 
     private MainPresenter mPresenter;
 
@@ -16,6 +23,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mPager = findViewById(R.id.viewPager);
+
+        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
     }
 
     @Override
