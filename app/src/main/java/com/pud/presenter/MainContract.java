@@ -1,5 +1,7 @@
 package com.pud.presenter;
 
+import com.pud.base.BaseContract;
+
 public interface MainContract {
 
     interface View extends BaseContract.View {

@@ -1,6 +1,4 @@
-package com.pud.model;
-
-import com.pud.presenter.BaseContract;
+package com.pud.base;
 
 import io.realm.Realm;
 
