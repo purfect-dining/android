@@ -1,5 +1,7 @@
 package com.pud.model;
 
-public class MainModel extends Model {
+import com.pud.presenter.MainContract;
+
+public class MainModel extends BaseModel implements MainContract.Model {
 
 }
