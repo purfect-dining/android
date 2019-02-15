@@ -4,12 +4,13 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pud.R;
+import com.pud.listener.ViewPagerListener;
 import com.pud.ui.adapter.ViewPagerAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends AppCompatActivity implements MainContract.View, ViewPagerListener {
 
     private BottomNavigationView mNav;
     private ViewPager mPager;
@@ -47,23 +48,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-
-        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                mNav.getMenu().getItem(lastNavPosition).setChecked(false);
-                mNav.getMenu().getItem(position).setChecked(true);
-                lastNavPosition = position;
-            }
-
-        });
+        mPager.addOnPageChangeListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
+        mPager.removeOnPageChangeListener(this);
     }
 
+    @Override
+    public void onPageSelected(int position) {
+        mNav.getMenu().getItem(lastNavPosition).setChecked(false);
+        mNav.getMenu().getItem(position).setChecked(true);
+        lastNavPosition = position;
+    }
 }
