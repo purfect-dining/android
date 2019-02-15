@@ -1,13 +1,13 @@
-package com.pud.ui.login;
+package com.pud.ui.auth;
 
-public class LoginPresenter implements LoginContract.Presenter {
+public class AuthPresenter implements AuthContract.Presenter {
 
-    private LoginContract.View mView;
-    private LoginModel mModel;
+    private AuthContract.View mView;
+    private AuthModel mModel;
 
-    public LoginPresenter(LoginContract.View view) {
+    public AuthPresenter(AuthContract.View view) {
         this.mView = view;
-        mModel = new LoginModel();
+        mModel = new AuthModel();
     }
 
     @Override

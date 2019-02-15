@@ -1,8 +1,8 @@
-package com.pud.ui.login;
+package com.pud.ui.auth;
 
 import com.pud.base.BaseContract;
 
-public interface LoginContract {
+public interface AuthContract {
 
     interface View extends BaseContract.View {
         void onLoginSuccess();

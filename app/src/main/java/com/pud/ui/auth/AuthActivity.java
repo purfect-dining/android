@@ -1,4 +1,4 @@
-package com.pud.ui.login;
+package com.pud.ui.auth;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,21 +14,21 @@ import com.pud.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.View {
+public class AuthActivity extends AppCompatActivity implements AuthContract.View {
 
     private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
-    private LoginPresenter mPresenter;
+    private AuthPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_auth);
 
-        mPresenter = new LoginPresenter(this);
+        mPresenter = new AuthPresenter(this);
         mPresenter.onCreate();
 
         mEmailView = findViewById(R.id.login_email);
