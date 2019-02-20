@@ -8,7 +8,7 @@ public class Place {
     private String name;
     private String phone;
     private String address;
-    private List<DiningTiming> timings;
+    private List<DiningTiming> diningTimings;
 
     public String getObjectId() {
         return objectId;
@@ -38,12 +38,12 @@ public class Place {
         this.address = address;
     }
 
-    public List<DiningTiming> getTimings() {
-        return timings;
+    public List<DiningTiming> getDiningTimings() {
+        return diningTimings;
     }
 
-    public void setTimings(List<DiningTiming> timings) {
-        this.timings = timings;
+    public void setDiningTimings(List<DiningTiming> diningTimings) {
+        this.diningTimings = diningTimings;
     }
 
 }

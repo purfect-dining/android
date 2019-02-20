@@ -1,13 +1,18 @@
 <resources>
     <string name="app_name">PUrfect Dining</string>
 
-    <!-- Login -->
-    <string name="login_text">Log In</string>
-    <string name="login_text_email">Email</string>
-    <string name="login_text_password">Password</string>
-    <string name="login_error_email">Email address is invalid</string>
-    <string name="login_error_password">Password is too short</string>
-    <string name="login_error_incorrect_password">Password is incorrect</string>
-    <string name="login_error_field_required">Field is required</string>
+    <!-- Auth -->
+    <string name="auth_login_title">Log In</string>
+    <string name="auth_signup_title">Sign Up</string>
+    <string name="auth_recovery_title">Forgot Password</string>
+
+    <string name="auth_text_email">Email</string>
+    <string name="auth_text_password">Password</string>
+    <string name="auth_error_email">Email address is invalid</string>
+    <string name="auth_error_password">Password is too short</string>
+    <string name="auth_error_incorrect_password">Password is incorrect</string>
+    <string name="auth_error_field_required">Field is required</string>
+
+    <string name="auth_signup_name">Name</string>
 
 </resources>
