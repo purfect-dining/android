@@ -3,7 +3,6 @@
     android:id="@+id/auth_login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_margin"
     android:gravity="center">
 
     <EditText
@@ -34,6 +33,25 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/auth_login_password"
         android:text="@string/auth_login_title"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/auth_login_signup_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/auth_login_button"
+        android:text="@string/auth_signup_title"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/auth_login_recover_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/auth_login_button"
+        android:layout_toEndOf="@+id/auth_login_signup_button"
+        android:text="@string/auth_recover_title"
         android:textStyle="bold" />
 
 </RelativeLayout>

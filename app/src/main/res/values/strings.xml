@@ -4,12 +4,13 @@
     <!-- Auth -->
     <string name="auth_login_title">Log In</string>
     <string name="auth_signup_title">Sign Up</string>
-    <string name="auth_recovery_title">Forgot Password</string>
+    <string name="auth_recover_title">Forgot Password</string>
 
     <string name="auth_text_email">Email</string>
     <string name="auth_text_password">Password</string>
+
     <string name="auth_error_email">Email address is invalid</string>
-    <string name="auth_error_password">Password is too short</string>
+    <string name="auth_error_short_password">Password is too short</string>
     <string name="auth_error_incorrect_password">Password is incorrect</string>
     <string name="auth_error_field_required">Field is required</string>
 
