@@ -1,5 +1,6 @@
-package com.pud.ui.home;
+package com.pud.ui.main;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 

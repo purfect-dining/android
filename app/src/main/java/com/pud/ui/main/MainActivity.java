@@ -1,81 +1,58 @@
 package com.pud.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pud.R;
-import com.pud.listener.ViewPagerListener;
 import com.pud.model.Place;
-import com.pud.ui.adapter.ViewPagerAdapter;
+import com.pud.ui.auth.AuthActivity;
 
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View, ViewPagerListener {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
 
-    private BottomNavigationView mNav;
-    private ViewPager mPager;
+    @BindView(R.id.main_place_list)
+    RecyclerView mList;
 
-    private ViewPagerAdapter mPagerAdapter;
-    private DataListener<List<Place>> mHomeDataListener;
+    @BindView(R.id.main_toolbar)
+    Toolbar mToolbar;
 
     private MainPresenter mPresenter;
-
-    private int lastNavPosition;
+    private PlaceAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mNav = findViewById(R.id.bottomNav);
-        mPager = findViewById(R.id.viewPager);
+        ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
 
         mPresenter = new MainPresenter(this);
         mPresenter.onCreate();
-
-        lastNavPosition = 0;
-        mNav.getMenu().getItem(0).setChecked(true);
-        mNav.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    mPager.setCurrentItem(0);
-                    break;
-                case R.id.nav_second:
-                    mPager.setCurrentItem(1);
-                    break;
-                case R.id.nav_third:
-                    mPager.setCurrentItem(2);
-                    break;
-            }
-            return false;
-        });
-
-        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-        mPager.addOnPageChangeListener(this);
+        mPresenter.getPlaces();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
-        mPager.removeOnPageChangeListener(this);
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        mNav.getMenu().getItem(lastNavPosition).setChecked(false);
-        mNav.getMenu().getItem(position).setChecked(true);
-        lastNavPosition = position;
     }
 
     @Override
     public void onPlacesReceived(List<Place> placeList) {
-        mHomeDataListener.onDataReceived(placeList);
+        mAdapter = new PlaceAdapter(this, placeList);
+        mList.setLayoutManager(new LinearLayoutManager(this));
+        mList.setAdapter(mAdapter);
     }
 
     @Override
@@ -83,11 +60,23 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void setHomeDataListener(DataListener<List<Place>> dataListener) {
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
     }
-    public interface DataListener<T> {
-        void onDataReceived(T data);
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.menu_login:
+                Intent intent = new Intent(this, AuthActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return true;
     }
 
 }

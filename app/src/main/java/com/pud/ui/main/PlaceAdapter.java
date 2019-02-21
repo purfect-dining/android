@@ -1,6 +1,7 @@
-package com.pud.ui.home;
+package com.pud.ui.main;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,33 +22,28 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
     public PlaceAdapter(Context context, List<Place> list) {
         mContext = context;
         mList = list;
-        setHasStableIds(true);
     }
 
-    public List<Place> getList() {
-        return mList;
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
+    public void setData(List<Place> data) {
+        this.mList = data;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_home_list_item, viewGroup, false);
+    public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_home_list_item, parent, false);
         return new PlaceViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PlaceViewHolder holder, int position) {
         holder.bind(mList.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return mList.size();
     }
 
 }
