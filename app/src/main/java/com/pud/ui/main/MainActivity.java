@@ -1,11 +1,15 @@
 package com.pud.ui.main;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pud.R;
 import com.pud.listener.ViewPagerListener;
+import com.pud.model.Place;
 import com.pud.ui.adapter.ViewPagerAdapter;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -16,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ViewPager mPager;
 
     private ViewPagerAdapter mPagerAdapter;
+    private DataListener<List<Place>> mHomeListener;
 
     private MainPresenter mPresenter;
 
@@ -42,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 case R.id.nav_second:
                     mPager.setCurrentItem(1);
                     break;
+                case R.id.nav_third:
+                    mPager.setCurrentItem(2);
+                    break;
             }
             return false;
         });
@@ -64,4 +72,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mNav.getMenu().getItem(position).setChecked(true);
         lastNavPosition = position;
     }
+
+    @Override
+    public void onPlacesReceived(List<Place> placeList) {
+
+    }
+
+    @Override
+    public void onError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void setHomeDataListener(DataListener<List<Place>> dataListener) {
+
+    }
+    public interface DataListener<T> {
+        void onDataReceived(T data);
+    }
+
 }
