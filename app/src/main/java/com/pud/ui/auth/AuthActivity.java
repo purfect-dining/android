@@ -3,96 +3,62 @@ package com.pud.ui.auth;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.pud.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class AuthActivity extends AppCompatActivity implements AuthContract.View {
+public class AuthActivity extends AppCompatActivity implements AuthContract.View, LoginFragment.LoginListener,
+        SignupFragment.SignupListener, RecoverFragment.RecoverListener {
 
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    @BindView(R.id.main_content)
+    FrameLayout mContentView;
+
+    @BindView(R.id.main_progress)
+    View mProgressView;
 
     private AuthPresenter mPresenter;
+    private List<Fragment> mFragments;
+
+    private AuthType mCurrentType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
+        ButterKnife.bind(this);
+
         mPresenter = new AuthPresenter(this);
         mPresenter.onCreate();
 
-        mEmailView = findViewById(R.id.login_email);
-        mPasswordView = findViewById(R.id.login_password);
+        mFragments = new ArrayList<>();
+        mFragments.add(new LoginFragment());
+        mFragments.add(new SignupFragment());
+        mFragments.add(new RecoverFragment());
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        findViewById(R.id.login_button).setOnClickListener(view -> loginCheck());
-
-        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
-            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                loginCheck();
-                return true;
-            }
-            return false;
-        });
-    }
-
-    @Override
-    public void loginCheck() {
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean error = false;
-        View focusView = null;
-
-        if (password.length() < 5) {
-            mPasswordView.setError(getString(R.string.login_error_password));
-            focusView = mPasswordView;
-            error = true;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.login_error_field_required));
-            focusView = mEmailView;
-            error = true;
-        } else if (!email.endsWith("@purdue.edu")) {
-            mEmailView.setError(getString(R.string.login_error_email));
-            focusView = mEmailView;
-            error = true;
-        }
-
-        if (error) {
-            focusView.requestFocus();
-        } else {
-            showProgress(true);
-            Handler h = new Handler();
-            h.postDelayed(() -> mPresenter.login(email, password), 2000);
-        }
+        replaceFragment(AuthType.LOGIN);
     }
 
     private void showProgress(boolean show) {
         int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+        mContentView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mContentView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                mContentView.setVisibility(show ? View.GONE : View.VISIBLE);
             }
         });
 
@@ -106,17 +72,66 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
     }
 
     @Override
-    public void onLoginSuccess() {
-        // TODO
-        // Open main activity
-        // Save user to Realm
+    public void onSuccess(AuthType type, String message) {
         showProgress(false);
-        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Success: " + message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onLoginFailed(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+    public void onError(String message) {
+        showProgress(false);
+        Toast.makeText(this, "Error: " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLogin(String email, String password) {
+        mPresenter.login(email, password);
+    }
+
+    @Override
+    public void onRecover(String email) {
+        mPresenter.recover(email);
+    }
+
+    @Override
+    public void onSignup(String email, String password, String name) {
+        mPresenter.signup(email, password, name);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCurrentType != AuthType.LOGIN) {
+            replaceFragment(AuthType.LOGIN);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void changeScreen(AuthType to) {
+        replaceFragment(to);
+    }
+
+    public void replaceFragment(AuthType type) {
+        mCurrentType = type;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_content, mFragments.get(type.get()));
+        fragmentTransaction.commit();
+    }
+
+    public enum AuthType {
+        LOGIN(0), SIGNUP(1), RECOVER(2);
+
+        private int numVal;
+
+        AuthType(int numVal) {
+            this.numVal = numVal;
+        }
+
+        public int get() {
+            return numVal;
+        }
     }
 
 }
