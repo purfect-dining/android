@@ -14,6 +14,10 @@ public interface BaseContract {
         void onDestroy();
 
         Realm getRealm();
+
+        default Exception setError(String error) {
+            return new Exception(error);
+        }
     }
 
     interface Presenter {
