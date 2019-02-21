@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private ViewPager mPager;
 
     private ViewPagerAdapter mPagerAdapter;
-    private DataListener<List<Place>> mHomeListener;
+    private DataListener<List<Place>> mHomeDataListener;
 
     private MainPresenter mPresenter;
 
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void onPlacesReceived(List<Place> placeList) {
-
+        mHomeDataListener.onDataReceived(placeList);
     }
 
     @Override
