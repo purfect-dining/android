@@ -5,7 +5,7 @@ import java.util.List;
 public class DiningTiming {
 
     private String objectId;
-    private String diningType;
+    private DiningType diningType;
     private Place ofPlace;
     private List<MenuSection> menuSections;
     private List<Rating> ratings;
@@ -15,11 +15,11 @@ public class DiningTiming {
         return objectId;
     }
 
-    public String getDiningType() {
+    public DiningType getDiningType() {
         return diningType;
     }
 
-    public void setDiningType(String diningType) {
+    public void setDiningType(DiningType diningType) {
         this.diningType = diningType;
     }
 
