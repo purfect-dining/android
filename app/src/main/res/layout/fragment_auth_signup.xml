@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="@string/auth_signup_name"
+        android:hint="@string/auth_text_name"
         android:inputType="textPersonName"
         android:singleLine="true" />
 
