@@ -35,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         setSupportActionBar(mToolbar);
+       getSupportActionBar().setTitle(null);
 
         mPresenter = new MainPresenter(this);
         mPresenter.onCreate();
