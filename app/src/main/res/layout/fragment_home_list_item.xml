@@ -3,4 +3,6 @@
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:gravity="center"
     android:layout_margin="8dp" />

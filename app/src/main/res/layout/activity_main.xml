@@ -5,16 +5,14 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_toolbar"
-        android:background="@drawable/toolbar_gradient"
-        android:elevation="5dp"
-        android:layout_gravity="top"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:background="@drawable/toolbar_gradient"
+        android:elevation="5dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_place_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/gologin" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
