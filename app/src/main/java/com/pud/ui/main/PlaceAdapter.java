@@ -46,4 +46,8 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
         return mList.size();
     }
 
+    public List<Place> getList() {
+        return mList;
+    }
+
 }

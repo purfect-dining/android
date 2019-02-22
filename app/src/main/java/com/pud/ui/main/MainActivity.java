@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.pud.R;
+import com.pud.listener.RecyclerItemClickListener;
 import com.pud.model.Place;
 import com.pud.ui.auth.AuthActivity;
+import com.pud.ui.place.PlaceActivity;
 
 import java.util.List;
 
@@ -19,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends AppCompatActivity implements MainContract.View, RecyclerItemClickListener.OnItemClickListener {
 
     @BindView(R.id.main_place_list)
     RecyclerView mList;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-       getSupportActionBar().setTitle(null);
+//        getSupportActionBar().setTitle(null);
 
         mPresenter = new MainPresenter(this);
         mPresenter.onCreate();
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void onPlacesReceived(List<Place> placeList) {
         mAdapter = new PlaceAdapter(this, placeList);
         mList.setLayoutManager(new LinearLayoutManager(this));
+        mList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
         mList.setAdapter(mAdapter);
     }
 
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
+        getMenuInflater().inflate(R.menu.main_toolbar, menu);
         return true;
     }
 
@@ -73,12 +77,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.menu_login:
+            case R.id.main_menu_login:
                 Intent intent = new Intent(this, AuthActivity.class);
                 startActivity(intent);
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(this, PlaceActivity.class);
+        intent.putExtra("objectId", mAdapter.getList().get(position).getObjectId());
+        intent.putExtra("name", mAdapter.getList().get(position).getName());
+        startActivity(intent);
     }
 
 }
