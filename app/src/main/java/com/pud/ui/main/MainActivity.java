@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-//        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setTitle(null);
 
         mPresenter = new MainPresenter(this);
         mPresenter.onCreate();
