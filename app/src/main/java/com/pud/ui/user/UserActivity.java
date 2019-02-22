@@ -39,6 +39,7 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(null);
 
         mPresenter = new UserPresenter(this);
         mPresenter.onCreate();
