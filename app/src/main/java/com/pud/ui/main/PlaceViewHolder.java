@@ -13,7 +13,7 @@ public class PlaceViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mTitle;
 
-    PlaceViewHolder(View itemView) {
+    public PlaceViewHolder(View itemView) {
         super(itemView);
         mTitle = itemView.findViewById(R.id.list_item);
     }

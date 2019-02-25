@@ -7,11 +7,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
 import com.pud.R;
 import com.pud.listener.RecyclerItemClickListener;
 import com.pud.model.Place;
 import com.pud.ui.auth.AuthActivity;
 import com.pud.ui.place.PlaceActivity;
+import com.pud.ui.user.UserActivity;
+import com.pud.ui.user.UserContract;
 
 import java.util.List;
 
@@ -68,7 +71,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        if (Backendless.UserService.CurrentUser() == null) {
+            getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.main_user_toolbar, menu);
+        }
         return true;
     }
 
@@ -80,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.main_menu_login:
                 Intent intent = new Intent(this, AuthActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.main_menu_profile:
+                Intent intent1 = new Intent(this, UserActivity.class);
+                startActivity(intent1);
                 break;
         }
         return true;
