@@ -3,12 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/user_menu_edit"
-        android:title="SAVE"
+        android:id="@+id/add_comment"
+        android:title="POST COMMENT"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/user_menu_logout"
-        android:title="Logout"
-        app:showAsAction="always" />
 </menu>

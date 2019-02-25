@@ -15,7 +15,9 @@
         <activity
             android:name=".ui.user.UserActivity"
             android:theme="@style/UserTheme" />
-        <activity android:name=".ui.place.PlaceActivity" />
+        <activity
+            android:name=".ui.place.PlaceActivity"
+            android:theme="@style/UserTheme" />
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
