@@ -2,12 +2,14 @@ package com.pud.ui.auth;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.pud.R;
+import com.pud.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +77,10 @@ public class AuthActivity extends AppCompatActivity implements AuthContract.View
     public void onSuccess(AuthType type, String message) {
         showProgress(false);
         Toast.makeText(this, "Success: " + message, Toast.LENGTH_SHORT).show();
+
+        Intent intent1 = new Intent(this, MainActivity.class);
+        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent1);
     }
 
     @Override
