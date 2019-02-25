@@ -5,10 +5,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 import com.pud.R;
 import com.pud.model.Place;
-import com.pud.ui.auth.AuthActivity;
+import com.pud.ui.main.MainActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -43,6 +48,10 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
 
         mPresenter = new UserPresenter(this);
         mPresenter.onCreate();
+
+        nameTextView.setText(Backendless.UserService.CurrentUser().getProperty("name").toString());
+        emailTextView.setText(Backendless.UserService.CurrentUser().getEmail());
+        passwordTextView.setText(Backendless.UserService.CurrentUser().getPassword());
     }
 
     @Override
@@ -56,10 +65,40 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
-            case R.id.user_menu_edit:
-                Intent intent = new Intent(this, AuthActivity.class);
-                startActivity(intent);
+            case android.R.id.home:
+                onBackPressed();
                 break;
+
+            case R.id.user_menu_edit:
+                BackendlessUser user = Backendless.UserService.CurrentUser();
+                user.setProperty("name", nameTextView.getText().toString());
+                user.setEmail(emailTextView.getText().toString());
+                user.setPassword(passwordTextView.getText().toString());
+
+                if (passwordTextView.getText().toString().length() > 0) {
+                    Backendless.UserService.logout();
+                    Intent intent1 = new Intent(this, MainActivity.class);
+                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent1);
+                }
+                Backendless.Data.save(user, new AsyncCallback<BackendlessUser>() {
+                    @Override
+                    public void handleResponse(BackendlessUser response) {
+                        Toast.makeText(UserActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Toast.makeText(UserActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+
+            case R.id.user_menu_logout:
+                Backendless.UserService.logout();
+                Intent intent1 = new Intent(this, MainActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent1);
         }
         return true;
     }
