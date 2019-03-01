@@ -12,12 +12,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".ui.auth.AuthActivity" />
+
+        <activity
+            android:name=".ui.comment.CommentActivity"
+            android:label="@string/comment_new_title"
+            android:theme="@style/UserTheme" />
+
         <activity
             android:name=".ui.user.UserActivity"
             android:theme="@style/UserTheme" />
+
         <activity
             android:name=".ui.place.PlaceActivity"
             android:theme="@style/UserTheme" />
+
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.auth.AuthActivity" />
+
     </application>
 
 </manifest>

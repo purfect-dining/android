@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">PUrfect Dining</string>
 
-    <string name="activity_user"></string>
+    <!-- Comment -->
+    <string name="comment_title">Comment</string>
+    <string name="comment_new_title">New Comment</string>
+    <string name="comment_edit_title">Edit Comment</string>
 
     <!-- Auth -->
     <string name="auth_login_title">Log In</string>
