@@ -8,9 +8,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
 import com.pud.R;
 import com.pud.model.Place;
 import com.pud.ui.main.MainActivity;
@@ -70,37 +67,31 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
                 break;
 
             case R.id.user_menu_edit:
-                BackendlessUser user = Backendless.UserService.CurrentUser();
-                user.setProperty("name", nameTextView.getText().toString());
-                user.setEmail(emailTextView.getText().toString());
-                user.setPassword(passwordTextView.getText().toString());
-
-                if (passwordTextView.getText().toString().length() > 0) {
-                    Backendless.UserService.logout();
-                    Intent intent1 = new Intent(this, MainActivity.class);
-                    intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent1);
-                }
-                Backendless.Data.save(user, new AsyncCallback<BackendlessUser>() {
-                    @Override
-                    public void handleResponse(BackendlessUser response) {
-                        Toast.makeText(UserActivity.this, "Profile Updated", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void handleFault(BackendlessFault fault) {
-                        Toast.makeText(UserActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                mPresenter.updateUser(nameTextView.getText().toString().trim(),
+                        emailTextView.getText().toString(),
+                        passwordTextView.getText().toString());
                 break;
 
             case R.id.user_menu_logout:
-                Backendless.UserService.logout();
-                Intent intent1 = new Intent(this, MainActivity.class);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent1);
+                mPresenter.logoutUser();
         }
         return true;
     }
 
+    @Override
+    public void onUserUpdated() {
+
+    }
+
+    @Override
+    public void onUserLoggedOut() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }

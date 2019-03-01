@@ -1,6 +1,9 @@
 package com.pud.ui.user;
 
+import com.backendless.Backendless;
+
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class UserPresenter implements UserContract.Presenter {
 
@@ -25,12 +28,22 @@ public class UserPresenter implements UserContract.Presenter {
         mModel.onDestroy();
     }
 
-//    @Override
-//    public void getPlace(String objectId) {
-//        Disposable disposable = mModel.getPlaceBackendless(objectId).subscribe(place -> mView.onPlaceLoaded(place),
-//                throwable -> mView.onError(throwable.getMessage()));
-//
-//        mCompositeDisposable.add(disposable);
-//    }
+    @Override
+    public void updateUser(String name, String email, String password) {
+        Disposable disposable = mModel.updateUserBackendless(name, email, password).subscribe(
+                logout -> {
+                    if (logout) mView.onUserUpdated();
+                    else logoutUser();
+                },
+                throwable -> mView.onError(throwable.getMessage()));
+
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void logoutUser() {
+        Backendless.UserService.logout();
+        mView.onUserLoggedOut();
+    }
 
 }
