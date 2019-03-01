@@ -14,7 +14,6 @@ import com.pud.model.Place;
 import com.pud.ui.auth.AuthActivity;
 import com.pud.ui.place.PlaceActivity;
 import com.pud.ui.user.UserActivity;
-import com.pud.ui.user.UserContract;
 
 import java.util.List;
 
@@ -71,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
         if (Backendless.UserService.CurrentUser() == null) {
             getMenuInflater().inflate(R.menu.main_toolbar, menu);
         } else {
