@@ -16,6 +16,10 @@ public class Comment {
         return objectId;
     }
 
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
     public String getText() {
         return text;
     }
