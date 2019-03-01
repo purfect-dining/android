@@ -39,7 +39,7 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
     RecyclerView mList;
 
     String objectId;
-    com.pud.ui.place.PlaceAdapter mAdapter;
+    CommentAdapter mAdapter;
     private PlacePresenter mPresenter;
     private Place mPlace;
     private List<Comment> ll;
@@ -84,7 +84,7 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         this.mPlace = place;
         ll = place.getDiningTimings().get(0).getComments();
         getSupportActionBar().setTitle(place.getName() + " " + place.getDiningTimings().get(0).getComments().size());
-        mAdapter = new PlaceAdapter(this, place.getDiningTimings().get(0).getComments());
+        mAdapter = new CommentAdapter(this, place.getDiningTimings().get(0).getComments());
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
         mList.setAdapter(mAdapter);

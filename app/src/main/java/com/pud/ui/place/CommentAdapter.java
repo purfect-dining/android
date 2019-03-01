@@ -7,19 +7,18 @@ import android.view.ViewGroup;
 
 import com.pud.R;
 import com.pud.model.Comment;
-import com.pud.model.Place;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
 
     private Context mContext;
     private List<Comment> mList;
 
-    public PlaceAdapter(Context context, List<Comment> list) {
+    public CommentAdapter(Context context, List<Comment> list) {
         mContext = context;
         mList = list;
     }
@@ -31,13 +30,13 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
 
     @NonNull
     @Override
-    public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_home_list_item, parent, false);
-        return new PlaceViewHolder(view);
+        return new CommentViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlaceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         holder.bind(mList.get(position));
     }
 

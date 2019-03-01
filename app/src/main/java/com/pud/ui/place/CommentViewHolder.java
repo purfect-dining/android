@@ -9,11 +9,11 @@ import com.pud.model.Place;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PlaceViewHolder extends RecyclerView.ViewHolder {
+public class CommentViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mTitle;
 
-    public PlaceViewHolder(View itemView) {
+    public CommentViewHolder(View itemView) {
         super(itemView);
         mTitle = itemView.findViewById(R.id.list_item);
     }
