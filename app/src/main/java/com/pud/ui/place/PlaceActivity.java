@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -29,13 +30,19 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
     @BindView(R.id.place_toolbar)
     Toolbar mToolbar;
 
+    @BindView(R.id.place_diningtiming_pager)
+    ViewPager mPager;
+
     @BindView(R.id.place_comment_list)
-    RecyclerView mList;
+    RecyclerView mCommentList;
 
     String objectId;
     CommentAdapter mAdapter;
+
     private PlacePresenter mPresenter;
+    private DiningTimingPagerAdapter mPagerAdapter;
     private Place mPlace;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +50,19 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         setContentView(R.layout.activity_place);
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mPresenter = new PlacePresenter(this);
-        mPresenter.onCreate();
-
         objectId = getIntent().getStringExtra("objectId");
         String name = getIntent().getStringExtra("name");
 
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(name);
+
+        mPresenter = new PlacePresenter(this);
+        mPresenter.onCreate();
         mPresenter.getPlace(objectId);
+
+        mCommentList.setLayoutManager(new LinearLayoutManager(this));
+        mCommentList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
     }
 
     @Override
@@ -76,11 +85,13 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
     @Override
     public void onPlaceLoaded(Place place) {
         this.mPlace = place;
-        getSupportActionBar().setTitle(place.getName() + " " + place.getDiningTimings().get(0).getComments().size());
-        mAdapter = new CommentAdapter(this, place.getDiningTimings().get(0).getComments());
-        mList.setLayoutManager(new LinearLayoutManager(this));
-        mList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
-        mList.setAdapter(mAdapter);
+        getSupportActionBar().setTitle(mPlace.getName() + " " + mPlace.getDiningTimings().get(0).getComments().size());
+
+        mAdapter = new CommentAdapter(this, mPlace.getDiningTimings().get(0).getComments());
+        mCommentList.setAdapter(mAdapter);
+
+        mPagerAdapter = new DiningTimingPagerAdapter(getSupportFragmentManager(), mPlace.getDiningTimings());
+        mPager.setAdapter(mPagerAdapter);
     }
 
     @Override
