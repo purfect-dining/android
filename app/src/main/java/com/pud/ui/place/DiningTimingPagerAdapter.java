@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-class DiningTimingPagerAdapter extends FragmentPagerAdapter {
+public class DiningTimingPagerAdapter extends FragmentPagerAdapter {
 
     private List<DiningTiming> mTimings;
 
@@ -21,7 +21,7 @@ class DiningTimingPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return new DiningTimingFragment();
+        return DiningTimingFragment.newInstance(mTimings.get(position));
     }
 
     @Override

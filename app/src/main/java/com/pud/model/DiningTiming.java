@@ -26,6 +26,10 @@ public class DiningTiming implements Parcelable {
     private List<Rating> ratings;
     private List<Comment> comments;
 
+    public DiningTiming() {
+
+    }
+
     public DiningTiming(Parcel in) {
         objectId = in.readString();
         ofPlace = in.readParcelable(Place.class.getClassLoader());

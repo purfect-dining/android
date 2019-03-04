@@ -3,7 +3,6 @@ package com.pud.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Place implements Parcelable {
@@ -25,6 +24,10 @@ public class Place implements Parcelable {
     private String phone;
     private String address;
     private List<DiningTiming> diningTimings;
+
+    public Place() {
+
+    }
 
     public Place(Parcel in) {
         objectId = in.readString();
