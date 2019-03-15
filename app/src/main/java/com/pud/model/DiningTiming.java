@@ -1,9 +1,24 @@
 package com.pud.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 import java.util.List;
 
-public class DiningTiming {
+public class DiningTiming implements Parcelable {
+
+    public static final Creator<DiningTiming> CREATOR = new Creator<DiningTiming>() {
+        @Override
+        public DiningTiming createFromParcel(Parcel in) {
+            return new DiningTiming(in);
+        }
+
+        @Override
+        public DiningTiming[] newArray(int size) {
+            return new DiningTiming[size];
+        }
+    };
 
     private String objectId;
     private DiningType diningType;
@@ -13,6 +28,16 @@ public class DiningTiming {
     private List<Comment> comments;
     private Date from;
     private Date to;
+
+    protected DiningTiming(Parcel in) {
+        objectId = in.readString();
+        diningType = in.readParcelable(DiningType.class.getClassLoader());
+        menuSections = in.createTypedArrayList(MenuSection.CREATOR);
+        ratings = in.createTypedArrayList(Rating.CREATOR);
+        comments = in.createTypedArrayList(Comment.CREATOR);
+        from = new Date(in.readLong());
+        to = new Date(in.readLong());
+    }
 
     public String getObjectId() {
         return objectId;
@@ -74,4 +99,19 @@ public class DiningTiming {
         this.to = to;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(objectId);
+        dest.writeParcelable(diningType, flags);
+        dest.writeTypedList(menuSections);
+        dest.writeTypedList(ratings);
+        dest.writeTypedList(comments);
+        dest.writeLong(from.getTime());
+        dest.writeLong(to.getTime());
+    }
 }

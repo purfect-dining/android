@@ -1,16 +1,38 @@
 package com.pud.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.backendless.BackendlessUser;
 
 import java.util.Date;
 
-public class Comment {
+public class Comment implements Parcelable {
+
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+        @Override
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
+        }
+
+        @Override
+        public Comment[] newArray(int size) {
+            return new Comment[size];
+        }
+    };
 
     private String objectId;
     private String text;
     private String rating;
     private BackendlessUser byUser;
     private Date created;
+
+    protected Comment(Parcel in) {
+        objectId = in.readString();
+        text = in.readString();
+        rating = in.readString();
+        created = new Date(in.readLong());
+    }
 
     public String getObjectId() {
         return objectId;
@@ -48,4 +70,20 @@ public class Comment {
         return created;
     }
 
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(objectId);
+        dest.writeString(text);
+        dest.writeString(rating);
+        dest.writeLong(created.getTime());
+    }
 }
