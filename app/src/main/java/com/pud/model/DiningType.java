@@ -23,6 +23,9 @@ public class DiningType implements Parcelable {
     private String name;
     private List<DiningTiming> diningTimings;
 
+    public DiningType() {
+    }
+
     protected DiningType(Parcel in) {
         objectId = in.readString();
         name = in.readString();

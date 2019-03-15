@@ -21,6 +21,9 @@ public class Rating implements Parcelable {
     private int rating;
     private DiningTiming ofDiningTiming;
 
+    public Rating() {
+    }
+
     protected Rating(Parcel in) {
         objectId = in.readString();
         rating = in.readInt();

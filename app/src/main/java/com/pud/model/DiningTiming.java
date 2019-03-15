@@ -29,6 +29,9 @@ public class DiningTiming implements Parcelable {
     private Date from;
     private Date to;
 
+    public DiningTiming() {
+    }
+
     protected DiningTiming(Parcel in) {
         objectId = in.readString();
         diningType = in.readParcelable(DiningType.class.getClassLoader());

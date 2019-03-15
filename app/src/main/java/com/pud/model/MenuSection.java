@@ -23,6 +23,9 @@ public class MenuSection implements Parcelable {
     private String name;
     private List<MenuItem> menuItems;
 
+    public MenuSection() {
+    }
+
     protected MenuSection(Parcel in) {
         objectId = in.readString();
         name = in.readString();

@@ -21,6 +21,9 @@ public class MenuItem implements Parcelable {
     private String name;
     private String allergens;
 
+    public MenuItem() {
+    }
+
     protected MenuItem(Parcel in) {
         objectId = in.readString();
         name = in.readString();

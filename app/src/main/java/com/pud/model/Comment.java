@@ -27,6 +27,9 @@ public class Comment implements Parcelable {
     private BackendlessUser byUser;
     private Date created;
 
+    public Comment() {
+    }
+
     protected Comment(Parcel in) {
         objectId = in.readString();
         text = in.readString();
