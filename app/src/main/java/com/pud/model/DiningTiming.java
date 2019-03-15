@@ -11,6 +11,8 @@ public class DiningTiming {
     private List<MenuSection> menuSections;
     private List<Rating> ratings;
     private List<Comment> comments;
+    private Date from;
+    private Date to;
 
     public String getObjectId() {
         return objectId;
@@ -54,6 +56,22 @@ public class DiningTiming {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Date getFrom() {
+        return from;
+    }
+
+    public void setFrom(Date from) {
+        this.from = from;
+    }
+
+    public Date getTo() {
+        return to;
+    }
+
+    public void setTo(Date to) {
+        this.to = to;
     }
 
 }
