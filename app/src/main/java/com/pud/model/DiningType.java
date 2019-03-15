@@ -5,33 +5,11 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class DiningType implements Parcelable {
-
-    public static final Creator<DiningType> CREATOR = new Creator<DiningType>() {
-        @Override
-        public DiningType createFromParcel(Parcel in) {
-            return new DiningType(in);
-        }
-
-        @Override
-        public DiningType[] newArray(int size) {
-            return new DiningType[size];
-        }
-    };
+public class DiningType {
 
     private String objectId;
     private String name;
     private List<DiningTiming> diningTimings;
-
-    public DiningType() {
-
-    }
-
-    public DiningType(Parcel in) {
-        objectId = in.readString();
-        name = in.readString();
-        diningTimings = in.createTypedArrayList(DiningTiming.CREATOR);
-    }
 
     public String getObjectId() {
         return objectId;
@@ -53,15 +31,4 @@ public class DiningType implements Parcelable {
         this.diningTimings = diningTimings;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(objectId);
-        dest.writeString(name);
-        dest.writeTypedList(diningTimings);
-    }
 }

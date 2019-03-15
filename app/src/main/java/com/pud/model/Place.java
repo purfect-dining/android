@@ -5,37 +5,13 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class Place implements Parcelable {
-
-    public static final Creator<Place> CREATOR = new Creator<Place>() {
-        @Override
-        public Place createFromParcel(Parcel in) {
-            return new Place(in);
-        }
-
-        @Override
-        public Place[] newArray(int size) {
-            return new Place[size];
-        }
-    };
+public class Place {
 
     private String objectId;
     private String name;
     private String phone;
     private String address;
     private List<DiningTiming> diningTimings;
-
-    public Place() {
-
-    }
-
-    public Place(Parcel in) {
-        objectId = in.readString();
-        name = in.readString();
-        phone = in.readString();
-        address = in.readString();
-        diningTimings = in.createTypedArrayList(DiningTiming.CREATOR);
-    }
 
     public String getObjectId() {
         return objectId;
@@ -73,17 +49,4 @@ public class Place implements Parcelable {
         this.diningTimings = diningTimings;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(objectId);
-        dest.writeString(name);
-        dest.writeString(phone);
-        dest.writeString(address);
-        dest.writeTypedList(diningTimings);
-    }
 }
