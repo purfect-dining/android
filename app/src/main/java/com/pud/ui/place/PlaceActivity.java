@@ -75,7 +75,7 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
                 break;
             case R.id.add_comment:
                 Intent intent = new Intent(this, CommentActivity.class);
-                startActivityForResult(intent, 777);
+                startActivity(intent);
                 break;
         }
 
@@ -101,12 +101,9 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (Backendless.UserService.CurrentUser() != null) {
+        if (Backendless.UserService.CurrentUser() != null)
             getMenuInflater().inflate(R.menu.place_toolbar, menu);
-
-            return true;
-        }
-        return false;
+        return true;
     }
 
     @Override
