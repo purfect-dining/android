@@ -6,32 +6,32 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pud.R;
-import com.pud.model.Place;
+import com.pud.model.DiningTiming;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
+public class DiningTimingAdapter extends RecyclerView.Adapter<DiningTimingHolder> {
 
     private Context mContext;
-    private List<Place> mList;
+    private List<DiningTiming> mList;
 
-    public PlaceAdapter(Context context, List<Place> list) {
+    public DiningTimingAdapter(Context context, List<DiningTiming> list) {
         mContext = context;
         mList = list;
     }
 
     @NonNull
     @Override
-    public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public DiningTimingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_home_list_item, parent, false);
-        return new PlaceViewHolder(view);
+        return new DiningTimingHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlaceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DiningTimingHolder holder, int position) {
         holder.bind(mList.get(position));
     }
 
@@ -40,7 +40,7 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
         return mList.size();
     }
 
-    public List<Place> getList() {
+    public List<DiningTiming> getList() {
         return mList;
     }
 

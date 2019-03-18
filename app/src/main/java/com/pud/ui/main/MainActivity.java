@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.backendless.Backendless;
 import com.pud.R;
 import com.pud.listener.RecyclerItemClickListener;
+import com.pud.model.DiningTiming;
 import com.pud.model.Place;
 import com.pud.ui.auth.AuthActivity;
 import com.pud.ui.place.PlaceActivity;
@@ -25,6 +26,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View, RecyclerItemClickListener.OnItemClickListener {
+
+    @BindView(R.id.main_open_list)
+    RecyclerView mOpenList;
 
     @BindView(R.id.main_place_list)
     RecyclerView mList;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mPresenter = new MainPresenter(this);
         mPresenter.onCreate();
         mPresenter.getPlaces();
+        mPresenter.getOpenDiningTimings();
     }
 
     @Override
@@ -61,6 +66,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
         mList.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onOpenDiningTimingsReceived(List<DiningTiming> diningTimingList) {
+        DiningTimingAdapter ac = new DiningTimingAdapter(this, diningTimingList);
+        mOpenList.setLayoutManager(new LinearLayoutManager(this));
+//        mOpenList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+        mOpenList.setAdapter(ac);
     }
 
     @Override

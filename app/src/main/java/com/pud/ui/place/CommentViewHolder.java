@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.pud.R;
 import com.pud.model.Comment;
-import com.pud.model.Place;
 
 import androidx.recyclerview.widget.RecyclerView;
 

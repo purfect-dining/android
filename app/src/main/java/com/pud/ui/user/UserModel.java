@@ -7,8 +7,6 @@ import com.backendless.exceptions.BackendlessFault;
 import com.pud.base.BaseModel;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 
 
 public class UserModel extends BaseModel implements UserContract.Model {

@@ -33,4 +33,12 @@ public class MainPresenter implements MainContract.Presenter {
 
         mCompositeDisposable.add(disposable);
     }
+
+    @Override
+    public void getOpenDiningTimings() {
+        Disposable disposable = mModel.getOpenDiningTimingsBackendless("02/22/2019", "11:36").subscribe(diningTimingList -> mView.onOpenDiningTimingsReceived(diningTimingList),
+                throwable -> mView.onError(throwable.getMessage()));
+
+        mCompositeDisposable.add(disposable);
+    }
 }
