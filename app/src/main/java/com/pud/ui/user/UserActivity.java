@@ -9,11 +9,15 @@ import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.pud.R;
-import com.pud.model.Place;
+import com.pud.model.Comment;
 import com.pud.ui.main.MainActivity;
+import com.pud.ui.comment.CommentAdapter;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,8 +35,10 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
     @BindView(R.id.user_password)
     TextView passwordTextView;
 
+    @BindView(R.id.place_comment_list)
+    RecyclerView mCommentList;
+
     private UserPresenter mPresenter;
-    private Place mPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,7 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
 
         mPresenter = new UserPresenter(this);
         mPresenter.onCreate();
+        mPresenter.getUserComments();
 
         nameTextView.setText(Backendless.UserService.CurrentUser().getProperty("name").toString());
         emailTextView.setText(Backendless.UserService.CurrentUser().getEmail());
@@ -88,6 +95,12 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onCommentsLoaded(List<Comment> commentList) {
+        CommentAdapter adapter = new CommentAdapter(this, commentList);
+        mCommentList.setAdapter(adapter);
     }
 
     @Override

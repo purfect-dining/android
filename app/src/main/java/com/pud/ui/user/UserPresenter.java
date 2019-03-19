@@ -46,4 +46,13 @@ public class UserPresenter implements UserContract.Presenter {
         mView.onUserLoggedOut();
     }
 
+    @Override
+    public void getUserComments() {
+        Disposable disposable = mModel.userCommentsBackendless().subscribe(
+                commentList -> mView.onCommentsLoaded(commentList),
+                throwable -> mView.onError(throwable.getMessage()));
+
+        mCompositeDisposable.add(disposable);
+    }
+
 }
