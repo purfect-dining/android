@@ -1,4 +1,4 @@
-package com.pud.ui.place;
+package com.pud.ui.comment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.pud.R;
 import com.pud.model.Comment;
+import com.pud.ui.place.CommentViewHolder;
 
 import java.util.List;
 
@@ -21,11 +22,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
     public CommentAdapter(Context context, List<Comment> list) {
         mContext = context;
         mList = list;
-    }
-
-    public void setData(List<Comment> data) {
-        this.mList = data;
-        notifyDataSetChanged();
     }
 
     @NonNull
