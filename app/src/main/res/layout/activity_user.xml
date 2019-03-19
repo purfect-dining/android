@@ -36,8 +36,7 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Aashir Aumir" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -48,8 +47,7 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/user_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="aaumir@purdue.edu" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -61,8 +59,7 @@
                     android:id="@+id/user_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:text="aaumir@purdue.edu" />
+                    android:inputType="textPassword" />
 
             </LinearLayout>
 
@@ -77,17 +74,10 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_comment_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/large_text" />
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
