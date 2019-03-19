@@ -1,5 +1,9 @@
 package com.pud.ui.main;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -36,7 +40,12 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void getOpenDiningTimings() {
-        Disposable disposable = mModel.getOpenDiningTimingsBackendless("02/22/2019", "11:36").subscribe(diningTimingList -> mView.onOpenDiningTimingsReceived(diningTimingList),
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+
+        Disposable disposable = mModel.getOpenDiningTimingsBackendless(dateFormat.format(date), timeFormat.format(date)).subscribe(
+                diningTimingList -> mView.onOpenDiningTimingsReceived(diningTimingList),
                 throwable -> mView.onError(throwable.getMessage()));
 
         mCompositeDisposable.add(disposable);
