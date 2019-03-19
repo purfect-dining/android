@@ -15,6 +15,7 @@ import com.pud.listener.RecyclerItemClickListener;
 import com.pud.model.Comment;
 import com.pud.model.Place;
 import com.pud.ui.comment.CommentActivity;
+import com.pud.ui.comment.CommentAdapter;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,7 +43,6 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
     private PlacePresenter mPresenter;
     private DiningTimingPagerAdapter mPagerAdapter;
     private Place mPlace;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
