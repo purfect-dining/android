@@ -23,7 +23,7 @@ public class Comment implements Parcelable {
 
     private String objectId;
     private String text;
-    private String rating;
+    private int rating;
     private BackendlessUser byUser;
     private Date created;
 
@@ -33,7 +33,7 @@ public class Comment implements Parcelable {
     protected Comment(Parcel in) {
         objectId = in.readString();
         text = in.readString();
-        rating = in.readString();
+        rating = in.readInt();
         created = new Date(in.readLong());
     }
 
@@ -53,11 +53,11 @@ public class Comment implements Parcelable {
         this.text = text;
     }
 
-    public String getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -86,7 +86,7 @@ public class Comment implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(objectId);
         dest.writeString(text);
-        dest.writeString(rating);
+        dest.writeInt(rating);
         dest.writeLong(created.getTime());
     }
 }
