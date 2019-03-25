@@ -33,7 +33,7 @@ public class CommentActivity extends AppCompatActivity {
     private String mDiningTimingID;
     private String mCommentID;
     private String mCommentText;
-    private String mCommentRating;
+    private int mCommentRating;
     private boolean mEdit;
 
     @Override
@@ -50,7 +50,7 @@ public class CommentActivity extends AppCompatActivity {
         if (mEdit) {
             mCommentID = getIntent().getStringExtra("comment_id");
             mCommentText = getIntent().getStringExtra("comment_text");
-            mCommentRating = getIntent().getStringExtra("comment_rating");
+            mCommentRating = getIntent().getIntExtra("comment_rating", 0);
             mToolbar.setTitle(getString(R.string.comment_edit_title));
             mCommentEditText.setText(mCommentText);
         }
@@ -59,12 +59,7 @@ public class CommentActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        if (Backendless.UserService.CurrentUser() != null) {
-            getMenuInflater().inflate(R.menu.place_toolbar, menu);
-        }
-
+        getMenuInflater().inflate(R.menu.comment_toolbar, menu);
         return true;
     }
 
@@ -77,7 +72,11 @@ public class CommentActivity extends AppCompatActivity {
                 if (mEdit) {
                     editComment();
                 } else {
-                    addComment();
+                    if (mCommentEditText.getText().toString().contains("ass")) {
+                        Toast.makeText(this, "Comment contains obscene comment", Toast.LENGTH_SHORT).show();
+                    } else {
+                        addComment();
+                    }
                 }
                 break;
         }
@@ -92,7 +91,7 @@ public class CommentActivity extends AppCompatActivity {
 
                 String comText = mCommentEditText.getText().toString();
                 comment.setText(comText);
-                comment.setRating("4");
+                comment.setRating(4);
 
                 Backendless.Data.of(Comment.class).save(comment, new AsyncCallback<Comment>() {
                     @Override
@@ -165,6 +164,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void handleResponse(Comment response) {
                 Toast.makeText(CommentActivity.this, "Comment Updated", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
