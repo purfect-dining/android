@@ -46,4 +46,8 @@ public class Place {
         this.diningTimings = diningTimings;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Place && getName().equals(((Place) o).getName());
+    }
 }
