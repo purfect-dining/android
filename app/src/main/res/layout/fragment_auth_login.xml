@@ -11,11 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:hint="@string/auth_text_email"
+        android:text="test@purdue.edu"
         android:inputType="textEmailAddress"
         android:singleLine="true" />
 
     <EditText
         android:id="@+id/auth_login_password"
+        android:text="12345"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/auth_login_email"

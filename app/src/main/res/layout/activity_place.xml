@@ -34,13 +34,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/place_comment_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/fvdfv"
         android:visibility="gone" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/place_diningtiming_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/fvdfv" />
+
 </RelativeLayout>
