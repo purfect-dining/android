@@ -75,6 +75,7 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
                 break;
             case R.id.add_comment:
                 Intent intent = new Intent(this, CommentActivity.class);
+                intent.putExtra("comment_dining_id", mPlace.getDiningTimings().get(0).getObjectId());
                 startActivity(intent);
                 break;
         }
