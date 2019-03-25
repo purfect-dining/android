@@ -4,24 +4,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.pud.R;
+import com.pud.listener.RecyclerItemClickListener;
 import com.pud.model.Comment;
-import com.pud.ui.main.MainActivity;
+import com.pud.ui.comment.CommentActivity;
 import com.pud.ui.comment.CommentAdapter;
+import com.pud.ui.main.MainActivity;
 
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserActivity extends AppCompatActivity implements UserContract.View {
+public class UserActivity extends AppCompatActivity implements UserContract.View, RecyclerItemClickListener.OnItemClickListener {
 
     @BindView(R.id.user_toolbar)
     Toolbar mToolbar;
@@ -35,10 +39,11 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
     @BindView(R.id.user_password)
     TextView passwordTextView;
 
-    @BindView(R.id.place_comment_list)
+    @BindView(R.id.user_comment_list)
     RecyclerView mCommentList;
 
     private UserPresenter mPresenter;
+    private CommentAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,9 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
         nameTextView.setText(Backendless.UserService.CurrentUser().getProperty("name").toString());
         emailTextView.setText(Backendless.UserService.CurrentUser().getEmail());
         passwordTextView.setText(Backendless.UserService.CurrentUser().getPassword());
+
+        mCommentList.setLayoutManager(new LinearLayoutManager(this));
+        mCommentList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
     }
 
     @Override
@@ -99,12 +107,31 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
 
     @Override
     public void onCommentsLoaded(List<Comment> commentList) {
-        CommentAdapter adapter = new CommentAdapter(this, commentList);
-        mCommentList.setAdapter(adapter);
+        Toast.makeText(this, "GOT", Toast.LENGTH_SHORT).show();
+        mAdapter = new CommentAdapter(this, commentList);
+        mCommentList.setAdapter(mAdapter);
     }
 
     @Override
     public void onError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Comment comment = mAdapter.getList().get(position);
+        mAdapter.getList().remove(position);
+
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra("comment_id", comment.getObjectId());
+        intent.putExtra("comment_edit", true);
+        intent.putExtra("comment_text", comment.getText());
+        startActivityForResult(intent, 433);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPresenter.getUserComments();
     }
 }
