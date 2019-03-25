@@ -20,6 +20,7 @@ public class DiningType implements Parcelable {
     };
 
     private String objectId;
+    private int order;
     private String name;
     private List<DiningTiming> diningTimings;
 
@@ -33,6 +34,14 @@ public class DiningType implements Parcelable {
 
     public String getObjectId() {
         return objectId;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 
     public String getName() {

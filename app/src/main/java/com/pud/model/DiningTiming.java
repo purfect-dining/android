@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.Date;
 import java.util.List;
 
-public class DiningTiming implements Parcelable {
+public class DiningTiming implements Parcelable{
 
     public static final Creator<DiningTiming> CREATOR = new Creator<DiningTiming>() {
         @Override
@@ -117,4 +117,5 @@ public class DiningTiming implements Parcelable {
         dest.writeLong(from.getTime());
         dest.writeLong(to.getTime());
     }
+
 }
