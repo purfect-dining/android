@@ -13,7 +13,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DiningTimingAdapter extends RecyclerView.Adapter<DiningTimingHolder> {
+public class DiningTimingAdapter extends RecyclerView.Adapter<DiningTimingViewHolder> {
 
     private Context mContext;
     private List<DiningTiming> mList;
@@ -25,13 +25,13 @@ public class DiningTimingAdapter extends RecyclerView.Adapter<DiningTimingHolder
 
     @NonNull
     @Override
-    public DiningTimingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_home_list_item, parent, false);
-        return new DiningTimingHolder(view);
+    public DiningTimingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.diningtiming_list_item, parent, false);
+        return new DiningTimingViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DiningTimingHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DiningTimingViewHolder holder, int position) {
         holder.bind(mList.get(position));
     }
 

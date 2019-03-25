@@ -1,6 +1,7 @@
 package com.pud.ui.main;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -41,10 +42,14 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void getOpenDiningTimings() {
         Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR, -1);
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
 
-        Disposable disposable = mModel.getOpenDiningTimingsBackendless(dateFormat.format(date), timeFormat.format(date)).subscribe(
+        Disposable disposable = mModel.getOpenDiningTimingsBackendless(dateFormat.format(cal.getTime()), timeFormat.format(cal.getTime())).subscribe(
                 diningTimingList -> mView.onOpenDiningTimingsReceived(diningTimingList),
                 throwable -> mView.onError(throwable.getMessage()));
 

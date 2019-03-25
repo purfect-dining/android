@@ -16,6 +16,7 @@ import com.pud.ui.auth.AuthActivity;
 import com.pud.ui.place.PlaceActivity;
 import com.pud.ui.user.UserActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     Toolbar mToolbar;
 
     private MainPresenter mPresenter;
-    private PlaceAdapter mAdapter;
+    private DiningTimingAdapter mAdapter;
+    private List<DiningTiming> timings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         mPresenter = new MainPresenter(this);
         mPresenter.onCreate();
-        mPresenter.getPlaces();
         mPresenter.getOpenDiningTimings();
     }
 
@@ -62,18 +63,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void onPlacesReceived(List<Place> placeList) {
-        mAdapter = new PlaceAdapter(this, placeList);
+        List<Place> wowlist = new ArrayList<>();
+        for (DiningTiming timing : timings) {
+            wowlist.add(timing.getOfPlace());
+        }
+        placeList.removeAll(wowlist);
+
+        PlaceAdapter ff = new PlaceAdapter(this, placeList);
         mList.setLayoutManager(new LinearLayoutManager(this));
-        mList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
-        mList.setAdapter(mAdapter);
+//        mList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+        mList.setAdapter(ff);
     }
 
     @Override
     public void onOpenDiningTimingsReceived(List<DiningTiming> diningTimingList) {
-        DiningTimingAdapter ac = new DiningTimingAdapter(this, diningTimingList);
+        mPresenter.getPlaces();
+        timings = diningTimingList;
+        mAdapter = new DiningTimingAdapter(this, diningTimingList);
         mOpenList.setLayoutManager(new LinearLayoutManager(this));
-//        mOpenList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
-        mOpenList.setAdapter(ac);
+        mOpenList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+        mOpenList.setAdapter(mAdapter);
     }
 
     @Override
@@ -113,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, PlaceActivity.class);
-        intent.putExtra("objectId", mAdapter.getList().get(position).getObjectId());
-        intent.putExtra("name", mAdapter.getList().get(position).getName());
+        intent.putExtra("objectId", mAdapter.getList().get(position).getOfPlace().getObjectId());
+        intent.putExtra("name", mAdapter.getList().get(position).getOfPlace().getName());
         startActivity(intent);
     }
 

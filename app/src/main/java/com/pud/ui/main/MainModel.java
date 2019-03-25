@@ -34,6 +34,7 @@ public class MainModel extends BaseModel implements MainContract.Model {
     public Observable<List<DiningTiming>> getOpenDiningTimingsBackendless(String date, String time) {
         return Observable.create(emitter -> {
             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+//            queryBuilder.setWhereClause("from <= '" + date + " " + time + ":00 EST' and to > '" + date + " " + time + ":00 EST' AND to < '" + date + " 23:59:59 EST'");
             queryBuilder.setWhereClause("from <= '" + date + " " + time + ":00 EST' and to > '" + date + " " + time + ":00 EST' AND to < '" + date + " 23:59:59 EST'");
             queryBuilder.setSortBy("ofPlace.name");
             Backendless.Data.of(DiningTiming.class).find(queryBuilder, new AsyncCallback<List<DiningTiming>>() {
