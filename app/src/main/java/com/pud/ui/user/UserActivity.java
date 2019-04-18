@@ -64,6 +64,12 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
 
         mCommentList.setLayoutManager(new LinearLayoutManager(this));
         mCommentList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+
+//        new EasyFeedback.Builder(this)
+//                .withEmail("webianks@gmail.com")
+//                .withSystemInfo()
+//                .build()
+//                .start();
     }
 
     @Override
