@@ -4,38 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.backendless.Backendless;
-import com.backendless.async.callback.AsyncCallback;
-import com.backendless.exceptions.BackendlessFault;
 import com.pud.R;
-import com.pud.listener.RecyclerItemClickListener;
-import com.pud.model.Comment;
 import com.pud.model.Place;
-import com.pud.ui.comment.CommentActivity;
 import com.pud.ui.comment.CommentAdapter;
+import com.pud.ui.comment.ViewCommentActivity;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PlaceActivity extends AppCompatActivity implements PlaceContract.View, RecyclerItemClickListener.OnItemClickListener {
+public class PlaceActivity extends AppCompatActivity implements PlaceContract.View {
 
     @BindView(R.id.place_toolbar)
     Toolbar mToolbar;
 
     @BindView(R.id.place_diningtiming_pager)
     ViewPager mPager;
-
-    @BindView(R.id.place_comment_list)
-    RecyclerView mCommentList;
 
     String objectId;
     CommentAdapter mAdapter;
@@ -60,9 +48,6 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         mPresenter = new PlacePresenter(this);
         mPresenter.onCreate();
         mPresenter.getPlace(objectId);
-
-        mCommentList.setLayoutManager(new LinearLayoutManager(this));
-        mCommentList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
     }
 
     @Override
@@ -73,9 +58,10 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.add_comment:
-                Intent intent = new Intent(this, CommentActivity.class);
-                intent.putExtra("comment_dining_id", mPlace.getDiningTimings().get(0).getObjectId());
+            case R.id.comments:
+                Intent intent = new Intent(this, ViewCommentActivity.class);
+                intent.putExtra("place_id", mPlace.getObjectId());
+                intent.putExtra("put_comment_id", mPlace.getDiningTimings().get(0).getObjectId());
                 startActivity(intent);
                 break;
         }
@@ -87,11 +73,7 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
     public void onPlaceLoaded(Place place) {
         this.mPlace = place;
         getSupportActionBar().setTitle(mPlace.getName() + " " + mPlace.getDiningTimings().get(0).getComments().size());
-
-        mAdapter = new CommentAdapter(this, mPlace.getDiningTimings().get(0).getComments());
-        mCommentList.setAdapter(mAdapter);
-
-        mPagerAdapter = new DiningTimingPagerAdapter(getSupportFragmentManager(), mPlace.getDiningTimings());
+        mPagerAdapter = new DiningTimingPagerAdapter(getSupportFragmentManager(), mPlace);
         mPager.setAdapter(mPagerAdapter);
     }
 
@@ -102,37 +84,8 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (Backendless.UserService.CurrentUser() != null)
-            getMenuInflater().inflate(R.menu.place_toolbar, menu);
+        getMenuInflater().inflate(R.menu.place_toolbar, menu);
         return true;
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        AlertDialog dialog = new AlertDialog.Builder(PlaceActivity.this)
-                .setTitle("Ford Dining Court")
-                .setMessage("Are you sure you want to delete?")
-                .setPositiveButton("Yes", (dialog2, which) -> {
-                    Comment comment = mAdapter.getList().get(position);
-                    mAdapter.getList().remove(position);
-
-                    Backendless.Data.of(Comment.class).remove(comment, new AsyncCallback<Long>() {
-                        @Override
-                        public void handleResponse(Long response) {
-                            mAdapter.notifyDataSetChanged();
-
-                            Toast.makeText(PlaceActivity.this, "Comment Deleted", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void handleFault(BackendlessFault fault) {
-
-                        }
-                    });
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();
     }
 
 }

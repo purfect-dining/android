@@ -1,7 +1,9 @@
 package com.pud.ui.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.pud.model.Place;
 import com.pud.ui.auth.AuthActivity;
 import com.pud.ui.place.PlaceActivity;
 import com.pud.ui.user.UserActivity;
+import com.webianks.easy_feedback.EasyFeedback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences dataSave = getSharedPreferences("app", 0);
+        if (dataSave.getBoolean("firstRun", true)) {
+            SharedPreferences.Editor editor = dataSave.edit();
+            editor.putBoolean("firstRun", false);
+            editor.apply();
+
+            Intent intent = new Intent(this, IntroActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
@@ -76,10 +92,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void onOpenDiningTimingsReceived(List<DiningTiming> diningTimingList) {
-        mPresenter.getPlaces();
+    public void onOpenDiningTimingsReceived(List<DiningTiming> diningTimingList, List<Double> ratingList) {
+        Log.e("KING", diningTimingList.size() + "  -  " + ratingList.size());
+
+        for (int i = 0; i < ratingList.size(); i++) {
+            for (int j = 0; j < ratingList.size() - 1; j++) {
+                if (ratingList.get(j) < ratingList.get(j + 1)) {
+                    double temp = ratingList.get(j);
+                    ratingList.set(j, ratingList.get(j + 1));
+                    ratingList.set(j + 1, temp);
+
+                    DiningTiming tempd = diningTimingList.get(j);
+                    diningTimingList.set(j, diningTimingList.get(j + 1));
+                    diningTimingList.set(j + 1, tempd);
+                }
+            }
+        }
+
+        mPresenter.getPlaces(); // get closed
         timings = diningTimingList;
-        mAdapter = new DiningTimingAdapter(this, diningTimingList);
+        Log.e("KING", diningTimingList.size() + "  -  " + ratingList.size());
+        mAdapter = new DiningTimingAdapter(this, diningTimingList, ratingList);
         mOpenList.setLayoutManager(new LinearLayoutManager(this));
         mOpenList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
         mOpenList.setAdapter(mAdapter);
@@ -114,6 +147,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             case R.id.main_menu_profile:
                 Intent intent1 = new Intent(this, UserActivity.class);
                 startActivity(intent1);
+                break;
+            case R.id.main_menu_feedback:
+                new EasyFeedback.Builder(this)
+                        .withEmail("pulse.aashir@gmail.com")
+                        .withSystemInfo()
+                        .build()
+                        .start();
+                Toast.makeText(this, "FEEDBACK SENT", Toast.LENGTH_SHORT).show();
                 break;
         }
         return true;

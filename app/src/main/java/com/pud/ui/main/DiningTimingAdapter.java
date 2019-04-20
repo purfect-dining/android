@@ -17,10 +17,12 @@ public class DiningTimingAdapter extends RecyclerView.Adapter<DiningTimingViewHo
 
     private Context mContext;
     private List<DiningTiming> mList;
+    private List<Double> mRatingList;
 
-    public DiningTimingAdapter(Context context, List<DiningTiming> list) {
+    public DiningTimingAdapter(Context context, List<DiningTiming> list, List<Double> ratingList) {
         mContext = context;
         mList = list;
+        mRatingList = ratingList;
     }
 
     @NonNull
@@ -32,7 +34,7 @@ public class DiningTimingAdapter extends RecyclerView.Adapter<DiningTimingViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DiningTimingViewHolder holder, int position) {
-        holder.bind(mList.get(position));
+        holder.bind(mList.get(position), mRatingList.get(position));
     }
 
     @Override

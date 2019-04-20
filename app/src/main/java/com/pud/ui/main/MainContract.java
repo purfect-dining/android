@@ -13,7 +13,7 @@ public interface MainContract {
     interface View extends BaseContract.View {
         void onPlacesReceived(List<Place> placeList);
 
-        void onOpenDiningTimingsReceived(List<DiningTiming> diningTimingList);
+        void onOpenDiningTimingsReceived(List<DiningTiming> diningTimingList, List<Double> ratingList);
 
         void onError(String message);
     }
@@ -22,6 +22,8 @@ public interface MainContract {
         Observable<List<Place>> placesBackendless();
 
         Observable<List<DiningTiming>> getOpenDiningTimingsBackendless(String date, String time);
+
+        Observable<Double> getOpenRatingsBackendless(String date, String name);
     }
 
     interface Presenter extends BaseContract.Presenter {

@@ -21,12 +21,12 @@ public class DiningTimingViewHolder extends RecyclerView.ViewHolder {
         mStatus = itemView.findViewById(R.id.diningtiming_status);
     }
 
-    public void bind(DiningTiming diningTiming) {
+    public void bind(DiningTiming diningTiming, Double rating) {
         mTitle.setText(diningTiming.getOfPlace().getName() + " - " + diningTiming.getDiningType().getName());
 
         Date date = new Date();
         long diff = diningTiming.getTo().getTime() - date.getTime();
-        mStatus.setText("Closes in " + msToString(diff));
+        mStatus.setText("Closes in " + msToString(diff) + "\nRating: " + rating);
 //        mTitle.setText(diningTiming.getFrom().toString().substring(0, 10) + "\n" + diningTiming.getOfPlace().getName() + " - " + diningTiming.getDiningType().getName() +
 //                ":  " + diningTiming.getFrom().toString().substring(11, 16) + " | " +
 //                diningTiming.getTo().toString().substring(11, 16) + "\n");

@@ -12,8 +12,8 @@ import com.backendless.Backendless;
 import com.pud.R;
 import com.pud.listener.RecyclerItemClickListener;
 import com.pud.model.Comment;
-import com.pud.ui.comment.CommentActivity;
 import com.pud.ui.comment.CommentAdapter;
+import com.pud.ui.comment.ModCommentActivity;
 import com.pud.ui.main.MainActivity;
 
 import java.util.List;
@@ -64,12 +64,6 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
 
         mCommentList.setLayoutManager(new LinearLayoutManager(this));
         mCommentList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
-
-//        new EasyFeedback.Builder(this)
-//                .withEmail("webianks@gmail.com")
-//                .withSystemInfo()
-//                .build()
-//                .start();
     }
 
     @Override
@@ -128,7 +122,7 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
         Comment comment = mAdapter.getList().get(position);
         mAdapter.getList().remove(position);
 
-        Intent intent = new Intent(this, CommentActivity.class);
+        Intent intent = new Intent(this, ModCommentActivity.class);
         intent.putExtra("comment_id", comment.getObjectId());
         intent.putExtra("comment_edit", true);
         intent.putExtra("comment_text", comment.getText());

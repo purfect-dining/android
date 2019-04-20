@@ -1,26 +1,41 @@
 package com.pud.ui.place;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Button;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.pud.R;
-import com.pud.model.DiningTiming;
-import com.pud.model.MenuItem;
-import com.pud.model.MenuSection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class DiningTimingFragment extends Fragment {
+import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
-    public static DiningTimingFragment newInstance(DiningTiming diningTiming) {
+public class DiningTimingFragment extends Fragment implements View.OnClickListener {
+
+    private int currentChart;
+    private BarChart mBarChart;
+    private PieChart mPieChart;
+    private Button mChartSwitch;
+
+    public static DiningTimingFragment newInstance(String id) {
         DiningTimingFragment fragment = new DiningTimingFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("diningTiming", diningTiming);
+        bundle.putString("id", id);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -28,24 +43,61 @@ public class DiningTimingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diningtiming, container, false);
-        DiningTiming diningTiming = getArguments().getParcelable("diningTiming");
-        String s = diningTiming.getDiningType().getName() + "\n" +
-                diningTiming.getFrom().toString().substring(11, 16) + " - " +
-                diningTiming.getTo().toString().substring(11, 16);
-        ((TextView) view.findViewById(R.id.diningtiming_text)).setText(s);
-        LinearLayout layout = view.findViewById(R.id.menu);
-        for (MenuSection section : diningTiming.getMenuSections()) {
-            TextView ts = new TextView(getContext());
-            ts.setText(section.getName());
-            ts.setTextSize(20);
-            ts.setPadding(0, 10, 0, 0);
-            layout.addView(ts);
-            for (MenuItem item : section.getMenuItems()) {
-                TextView ti = new TextView(getContext());
-                ti.setText(item.getName());
-                layout.addView(ti);
-            }
-        }
+
+        mBarChart = view.findViewById(R.id.barchart);
+        mPieChart = view.findViewById(R.id.piechart);
+        mChartSwitch = view.findViewById(R.id.chartSwitch);
+        mChartSwitch.setOnClickListener(this);
+
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0, 1));
+        entries.add(new BarEntry(1, 30));
+        entries.add(new BarEntry(2, 12));
+
+        BarDataSet set1 = new BarDataSet(entries, "BarDataSet");
+        set1.setColors(rgb("#e74c3c"), rgb("#f1c40f"), rgb("#2ecc71"));
+
+        BarData data = new BarData(set1);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(10f);
+
+        mBarChart.setFitBars(true);
+        mBarChart.setData(data);
+        mBarChart.getDescription().setEnabled(false);
+
+
+        mPieChart.setCenterText("Rating");
+        List<PieEntry> entriees = new ArrayList<>();
+
+        entriees.add(new PieEntry(4, "Bad"));
+        entriees.add(new PieEntry(30, "Okay"));
+        entriees.add(new PieEntry(12, "Great"));
+
+        PieDataSet set = new PieDataSet(entriees, "Election Results");
+        set.setColors(rgb("#e74c3c"), rgb("#f1c40f"), rgb("#2ecc71"));
+
+        PieData datap = new PieData(set);
+        datap.setValueTextSize(15f);
+        mPieChart.setData(datap);
+        mPieChart.setUsePercentValues(true);
+        mPieChart.getDescription().setEnabled(false);
+
         return view;
     }
+
+    @Override
+    public void onClick(View v) {
+        if (currentChart == 0) {
+            currentChart = 1;
+            mChartSwitch.setText("BAR CHART");
+            mPieChart.setVisibility(View.VISIBLE);
+            mBarChart.setVisibility(View.INVISIBLE);
+        } else {
+            currentChart = 0;
+            mChartSwitch.setText("PIE CHART");
+            mPieChart.setVisibility(View.INVISIBLE);
+            mBarChart.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

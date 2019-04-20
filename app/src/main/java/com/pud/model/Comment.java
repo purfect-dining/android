@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.backendless.BackendlessUser;
 
 import java.util.Date;
+import java.util.List;
 
 public class Comment implements Parcelable {
 
@@ -24,6 +25,7 @@ public class Comment implements Parcelable {
     private String objectId;
     private String text;
     private int rating;
+    private List<BackendlessUser> likes;
     private BackendlessUser byUser;
     private Date created;
 
@@ -59,6 +61,14 @@ public class Comment implements Parcelable {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public List<BackendlessUser> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<BackendlessUser> likes) {
+        this.likes = likes;
     }
 
     public BackendlessUser getByUser() {

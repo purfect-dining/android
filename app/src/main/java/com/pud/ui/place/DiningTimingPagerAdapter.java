@@ -1,8 +1,6 @@
 package com.pud.ui.place;
 
-import com.pud.model.DiningTiming;
-
-import java.util.List;
+import com.pud.model.Place;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -11,22 +9,26 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class DiningTimingPagerAdapter extends FragmentPagerAdapter {
 
-    private List<DiningTiming> mTimings;
+    private Place mPlace;
 
-    public DiningTimingPagerAdapter(FragmentManager fm, List<DiningTiming> timings) {
+    public DiningTimingPagerAdapter(FragmentManager fm, Place place) {
         super(fm);
-        this.mTimings = timings;
+        this.mPlace = place;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return DiningTimingFragment.newInstance(mTimings.get(position));
+        if (position == 0)
+            return new DiningTimingFragment();
+//            return DiningTimingFragment.newInstance(mPlace.getObjectId());
+        else
+            return DiningTimingMenuFragment.newInstance(mPlace.getDiningTimings().get(position));
     }
 
     @Override
     public int getCount() {
-        return mTimings.size();
+        return mPlace.getDiningTimings().size();
     }
 
 }

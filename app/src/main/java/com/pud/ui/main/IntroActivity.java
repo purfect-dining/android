@@ -1,5 +1,6 @@
 package com.pud.ui.main;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -36,6 +37,14 @@ public class IntroActivity extends TutorialActivity {
     @Override
     public void currentFragmentPosition(int position) {
 
+    }
+
+    @Override
+    public void finishTutorial() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

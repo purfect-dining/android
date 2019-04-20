@@ -22,7 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CommentActivity extends AppCompatActivity {
+public class ModCommentActivity extends AppCompatActivity {
 
     @BindView(R.id.comment_toolbar)
     Toolbar mToolbar;
@@ -106,7 +106,7 @@ public class CommentActivity extends AppCompatActivity {
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
-                                Toast.makeText(CommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ModCommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -120,7 +120,7 @@ public class CommentActivity extends AppCompatActivity {
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
-                                Toast.makeText(CommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ModCommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -129,27 +129,27 @@ public class CommentActivity extends AppCompatActivity {
                         Backendless.Data.of(Comment.class).setRelation(comment, "ofDiningTiming", dt, new AsyncCallback<Integer>() {
                             @Override
                             public void handleResponse(Integer response) {
-                                Toast.makeText(CommentActivity.this, "Comment Posted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ModCommentActivity.this, "Comment Posted", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
-                                Toast.makeText(CommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ModCommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-                        Toast.makeText(CommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ModCommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Toast.makeText(CommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ModCommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -163,13 +163,13 @@ public class CommentActivity extends AppCompatActivity {
         Backendless.Data.save(comment, new AsyncCallback<Comment>() {
             @Override
             public void handleResponse(Comment response) {
-                Toast.makeText(CommentActivity.this, "Comment Updated", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ModCommentActivity.this, "Comment Updated", Toast.LENGTH_SHORT).show();
                 finish();
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Toast.makeText(CommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ModCommentActivity.this, fault.getMessage(), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

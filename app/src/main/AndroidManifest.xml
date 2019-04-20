@@ -16,8 +16,13 @@
         <activity android:name=".ui.auth.AuthActivity" />
 
         <activity
-            android:name=".ui.comment.CommentActivity"
+            android:name=".ui.comment.ModCommentActivity"
             android:label="@string/comment_new_title"
+            android:theme="@style/UserTheme" />
+
+        <activity
+            android:name=".ui.comment.ViewCommentActivity"
+            android:label="Comments"
             android:theme="@style/UserTheme" />
 
         <activity

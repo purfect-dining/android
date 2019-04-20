@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.pud.R;
 import com.pud.model.Comment;
-import com.pud.ui.place.CommentViewHolder;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_home_list_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.comment_list_item, parent, false);
         return new CommentViewHolder(view);
     }
 
