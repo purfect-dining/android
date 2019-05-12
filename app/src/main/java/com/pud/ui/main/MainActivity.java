@@ -9,6 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.backendless.Backendless;
 import com.pud.R;
 import com.pud.listener.RecyclerItemClickListener;
@@ -22,14 +27,10 @@ import com.webianks.easy_feedback.EasyFeedback;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View, RecyclerItemClickListener.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements MainContract.View, RecyclerItemClickListener.ClickListener {
 
     @BindView(R.id.main_open_list)
     RecyclerView mOpenList;
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             wowlist.add(timing.getOfPlace());
         }
         placeList.removeAll(wowlist);
-
         PlaceAdapter ff = new PlaceAdapter(this, placeList);
         mList.setLayoutManager(new LinearLayoutManager(this));
 //        mList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
@@ -94,19 +94,41 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void onOpenDiningTimingsReceived(List<DiningTiming> diningTimingList, List<Double> ratingList) {
         Log.e("KING", diningTimingList.size() + "  -  " + ratingList.size());
+        List<Temp> temps = new ArrayList<>();
+        for (int i = 0; i < diningTimingList.size(); i++) {
+            temps.add(new Temp(diningTimingList.get(i), ratingList.get(i)));
+        }
 
-        for (int i = 0; i < ratingList.size(); i++) {
-            for (int j = 0; j < ratingList.size() - 1; j++) {
-                if (ratingList.get(j) < ratingList.get(j + 1)) {
-                    double temp = ratingList.get(j);
-                    ratingList.set(j, ratingList.get(j + 1));
-                    ratingList.set(j + 1, temp);
-
-                    DiningTiming tempd = diningTimingList.get(j);
-                    diningTimingList.set(j, diningTimingList.get(j + 1));
-                    diningTimingList.set(j + 1, tempd);
+        for (int i = 0; i < temps.size(); i++) {
+            for (int j = 1; j < (temps.size() - i); j++) {
+                if (temps.get(j).rating < temps.get(j - 1).rating) {
+                    Temp temp = temps.get(j);
+                    temps.set(j, temps.get(j - 1));
+                    temps.set(j - 1, temp);
                 }
             }
+        }
+
+//        for (int i = 0; i < ratingList.size(); i++) {
+//            for (int j = 0; j < ratingList.size() - 1; j++) {
+//                if (ratingList.get(j) < ratingList.get(j + 1)) {
+//                    double temp = ratingList.get(j);
+//                    ratingList.set(j, ratingList.get(j + 1));
+//                    ratingList.set(j + 1, temp);
+//
+//                    DiningTiming tempd = diningTimingList.get(j);
+//                    diningTimingList.set(j, diningTimingList.get(j + 1));
+//                    diningTimingList.set(j + 1, tempd);
+//                }
+//            }
+//        }
+
+        diningTimingList.clear();
+        ratingList.clear();
+
+        for (int i = 0; i < temps.size(); i++) {
+            diningTimingList.add(temps.get(i).diningTiming);
+            ratingList.add(temps.get(i).rating);
         }
 
         mPresenter.getPlaces(); // get closed
@@ -114,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         Log.e("KING", diningTimingList.size() + "  -  " + ratingList.size());
         mAdapter = new DiningTimingAdapter(this, diningTimingList, ratingList);
         mOpenList.setLayoutManager(new LinearLayoutManager(this));
-        mOpenList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+        mOpenList.addOnItemTouchListener(new RecyclerItemClickListener(this, mOpenList, this));
         mOpenList.setAdapter(mAdapter);
     }
 
@@ -161,11 +183,25 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onClick(View view, int position) {
         Intent intent = new Intent(this, PlaceActivity.class);
         intent.putExtra("objectId", mAdapter.getList().get(position).getOfPlace().getObjectId());
         intent.putExtra("name", mAdapter.getList().get(position).getOfPlace().getName());
         startActivity(intent);
     }
 
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+
+    class Temp {
+        public DiningTiming diningTiming;
+        public double rating;
+
+        public Temp(DiningTiming d, double r) {
+            this.diningTiming = d;
+            this.rating = r;
+        }
+    }
 }

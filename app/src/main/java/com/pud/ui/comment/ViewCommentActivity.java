@@ -8,6 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
@@ -20,14 +25,10 @@ import com.pud.model.Comment;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ViewCommentActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener {
+public class ViewCommentActivity extends AppCompatActivity implements RecyclerItemClickListener.ClickListener {
 
     @BindView(R.id.comment_toolbar)
     Toolbar mToolbar;
@@ -47,7 +48,7 @@ public class ViewCommentActivity extends AppCompatActivity implements RecyclerIt
         mPlaceID = getIntent().getStringExtra("place_id");
         commentList = findViewById(R.id.comment_list);
         commentList.setLayoutManager(new LinearLayoutManager(this));
-        commentList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+        commentList.addOnItemTouchListener(new RecyclerItemClickListener(this, commentList, this));
 
         loadComments();
     }
@@ -75,6 +76,12 @@ public class ViewCommentActivity extends AppCompatActivity implements RecyclerIt
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        loadComments();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (Backendless.UserService.CurrentUser() != null)
             getMenuInflater().inflate(R.menu.comment_toolbar, menu);
@@ -89,7 +96,7 @@ public class ViewCommentActivity extends AppCompatActivity implements RecyclerIt
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.comments:
+            case R.id.comment_menu_post:
                 Intent intent = new Intent(this, ModCommentActivity.class);
                 intent.putExtra("comment_dining_id", getIntent().getStringExtra("put_comment_id"));
                 startActivity(intent);
@@ -97,36 +104,6 @@ public class ViewCommentActivity extends AppCompatActivity implements RecyclerIt
         }
 
         return true;
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        likeComment(position);
-        // Delete Comment
-//        AlertDialog dialog = new AlertDialog.Builder(PlaceActivity.this)
-//                .setTitle("Ford Dining Court")
-//                .setMessage("Are you sure you want to delete?")
-//                .setPositiveButton("Yes", (dialog2, which) -> {
-//                    Comment comment = mAdapter.getList().get(position);
-//                    mAdapter.getList().remove(position);
-//
-//                    Backendless.Data.of(Comment.class).remove(comment, new AsyncCallback<Long>() {
-//                        @Override
-//                        public void handleResponse(Long response) {
-//                            mAdapter.notifyDataSetChanged();
-//
-//                            Toast.makeText(PlaceActivity.this, "Comment Deleted", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        @Override
-//                        public void handleFault(BackendlessFault fault) {
-//
-//                        }
-//                    });
-//                })
-//                .setNegativeButton("Cancel", null)
-//                .create();
-//        dialog.show();
     }
 
     private void likeComment(int position) {
@@ -153,5 +130,21 @@ public class ViewCommentActivity extends AppCompatActivity implements RecyclerIt
             mCommentList.get(position).getLikes().add(new BackendlessUser());
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        Intent intent = new Intent(this, ModCommentActivity.class);
+        intent.putExtra("comment_dining_id", getIntent().getStringExtra("put_comment_id"));
+        intent.putExtra("comment_edit", true);
+        intent.putExtra("comment_id", mCommentList.get(position).getObjectId());
+        intent.putExtra("comment_text", mCommentList.get(position).getText());
+        intent.putExtra("comment_rating", mCommentList.get(position).getRating());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+        likeComment(position);
     }
 }

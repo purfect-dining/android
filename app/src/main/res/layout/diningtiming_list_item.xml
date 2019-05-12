@@ -1,24 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/diningtiming_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="horizontal"
+    android:paddingBottom="16dp">
 
-    <TextView
-        android:id="@+id/diningtiming_place_name"
+    <LinearLayout
+        android:id="@+id/diningtiming_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textSize="20sp" />
+        android:layout_weight="0.25"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/diningtiming_place_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Name"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/diningtiming_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="Type"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/diningtiming_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="-"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/diningtiming_status"
+        android:id="@+id/diningtiming_rating"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:layout_weight="1"
         android:gravity="center"
-        android:textSize="18sp" />
+        android:maxLength="4"
+        android:text="-"
+        android:textSize="26sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

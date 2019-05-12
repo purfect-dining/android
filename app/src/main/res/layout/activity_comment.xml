@@ -12,9 +12,10 @@
         android:elevation="5dp" />
 
     <EditText
+        android:layout_height="wrap_content"
         android:id="@+id/comment_input_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:padding="16dp"
         android:hint="@string/comment_new_title" />
 
 </LinearLayout>

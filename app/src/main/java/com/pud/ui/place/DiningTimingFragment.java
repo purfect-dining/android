@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
@@ -20,9 +23,6 @@ import com.pud.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
 public class DiningTimingFragment extends Fragment implements View.OnClickListener {
@@ -32,10 +32,13 @@ public class DiningTimingFragment extends Fragment implements View.OnClickListen
     private PieChart mPieChart;
     private Button mChartSwitch;
 
-    public static DiningTimingFragment newInstance(String id) {
+
+    public static DiningTimingFragment newInstance(int l, int m, int h) {
         DiningTimingFragment fragment = new DiningTimingFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("id", id);
+        bundle.putInt("l", l);
+        bundle.putInt("m", m);
+        bundle.putInt("h", h);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -50,9 +53,14 @@ public class DiningTimingFragment extends Fragment implements View.OnClickListen
         mChartSwitch.setOnClickListener(this);
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 1));
-        entries.add(new BarEntry(1, 30));
-        entries.add(new BarEntry(2, 12));
+
+        int l = getArguments().getInt("l");
+        int m = getArguments().getInt("m");
+        int h = getArguments().getInt("h");
+
+        entries.add(new BarEntry(0, l));
+        entries.add(new BarEntry(1, m));
+        entries.add(new BarEntry(2, h));
 
         BarDataSet set1 = new BarDataSet(entries, "BarDataSet");
         set1.setColors(rgb("#e74c3c"), rgb("#f1c40f"), rgb("#2ecc71"));
@@ -69,9 +77,9 @@ public class DiningTimingFragment extends Fragment implements View.OnClickListen
         mPieChart.setCenterText("Rating");
         List<PieEntry> entriees = new ArrayList<>();
 
-        entriees.add(new PieEntry(4, "Bad"));
-        entriees.add(new PieEntry(30, "Okay"));
-        entriees.add(new PieEntry(12, "Great"));
+        entriees.add(new PieEntry(l, "Bad"));
+        entriees.add(new PieEntry(m, "Okay"));
+        entriees.add(new PieEntry(h, "Great"));
 
         PieDataSet set = new PieDataSet(entriees, "Election Results");
         set.setColors(rgb("#e74c3c"), rgb("#f1c40f"), rgb("#2ecc71"));

@@ -8,7 +8,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 import com.pud.R;
 import com.pud.listener.RecyclerItemClickListener;
 import com.pud.model.Comment;
@@ -18,14 +26,10 @@ import com.pud.ui.main.MainActivity;
 
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserActivity extends AppCompatActivity implements UserContract.View, RecyclerItemClickListener.OnItemClickListener {
+public class UserActivity extends AppCompatActivity implements UserContract.View, RecyclerItemClickListener.ClickListener {
 
     @BindView(R.id.user_toolbar)
     Toolbar mToolbar;
@@ -63,7 +67,7 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
         passwordTextView.setText(Backendless.UserService.CurrentUser().getPassword());
 
         mCommentList.setLayoutManager(new LinearLayoutManager(this));
-        mCommentList.addOnItemTouchListener(new RecyclerItemClickListener(this, this));
+        mCommentList.addOnItemTouchListener(new RecyclerItemClickListener(this, mCommentList, this));
     }
 
     @Override
@@ -118,7 +122,12 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPresenter.getUserComments();
+    }
+
+    @Override
+    public void onClick(View view, int position) {
         Comment comment = mAdapter.getList().get(position);
         mAdapter.getList().remove(position);
 
@@ -127,11 +136,33 @@ public class UserActivity extends AppCompatActivity implements UserContract.View
         intent.putExtra("comment_edit", true);
         intent.putExtra("comment_text", comment.getText());
         startActivityForResult(intent, 433);
-
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mPresenter.getUserComments();
+    public void onLongClick(View view, int position) {
+        // Delete Comment
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Ford Dining Court")
+                .setMessage("Are you sure you want to delete?")
+                .setPositiveButton("Yes", (dialog2, which) -> {
+                    Comment comment = mAdapter.getList().get(position);
+                    mAdapter.getList().remove(position);
+
+                    Backendless.Data.of(Comment.class).remove(comment, new AsyncCallback<Long>() {
+                        @Override
+                        public void handleResponse(Long response) {
+                            mAdapter.notifyDataSetChanged();
+                            Toast.makeText(UserActivity.this, "Comment Deleted", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
     }
 }

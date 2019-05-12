@@ -7,4 +7,9 @@
         android:title="Profile"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/main_menu_feedback"
+        android:title="Feedback"
+        app:showAsAction="always" />
+
 </menu>

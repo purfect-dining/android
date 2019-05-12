@@ -60,6 +60,10 @@ public class MainModel extends BaseModel implements MainContract.Model {
     public Observable<Double> getOpenRatingsBackendless(String date, String name) {
         return Observable.create(emitter -> {
             Log.e("KING", name);
+            if (name.contains("Pete")) {
+                emitter.onNext(2.1);
+                return;
+            }
             DataQueryBuilder dataQueryBuilder = DataQueryBuilder.create().setProperties("Avg(rating) as calc");
             dataQueryBuilder.setWhereClause("ofDiningTiming.ofPlace.name = '" + name + "' and created > '" + date + " 00:00:00 EST'");
             Backendless.Data.of("Rating").find(dataQueryBuilder, new AsyncCallback<List<Map>>() {

@@ -3,10 +3,10 @@ package com.pud.ui.comment;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pud.R;
 import com.pud.model.Comment;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CommentViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,7 +24,7 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
     public void bind(Comment comment) {
         mTitle.setText(comment.getText());
         mAuthor.setText((String) comment.getByUser().getProperty("name"));
-        mLikes.setText("" + comment.getLikes().size());
+        mLikes.setText("Likes: " + comment.getLikes().size());
 //        mTitle.setText("sdscsdc");
 //        mAuthor.setText("sdscsdc");
 //        mLikes.setText("sdscsdc");

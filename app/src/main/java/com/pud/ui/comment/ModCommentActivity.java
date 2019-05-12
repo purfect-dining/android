@@ -6,6 +6,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
@@ -17,8 +20,6 @@ import com.pud.model.DiningTiming;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -53,6 +54,7 @@ public class ModCommentActivity extends AppCompatActivity {
             mCommentRating = getIntent().getIntExtra("comment_rating", 0);
             mToolbar.setTitle(getString(R.string.comment_edit_title));
             mCommentEditText.setText(mCommentText);
+            getSupportActionBar().setTitle("Edit Comment");
         }
 
     }
